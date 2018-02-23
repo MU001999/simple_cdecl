@@ -3,18 +3,21 @@
 #define SAVE_TOKEN  yylval.string = new std::string(yytext, yyleng)
 %}
 
-delim                   [ \t]
-ws                      {delim}+
+delim           [ \t]
+ws              {delim}+
 id              [a-zA-Z_][a-zA-Z0-9_]*
+int             [0-9]+
 
 %option noyywrap
 
 %%
 
 {ws}            ;
+{int}           SAVE_TOKEN; return INTEGER;
 "\n"            return('\n'); 
 
 "*"             return('*');
+","             return(',');
 
 "("             return('(');
 ")"             return(')');
