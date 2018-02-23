@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 extern int yylex();
+void yyerror(const char *s) { printf("ERROR: %s\n", s); }
 %}
 
 %union{
@@ -10,20 +11,22 @@ extern int yylex();
 }
 
 %token <string> IDENTIFIER INTEGER
-%token <token> INT CHAR LONG CONST FLOAT SHORT
-%token <token> DOUBLE SIGNED UNSIGNED VOLATILE
+%token <string> INT CHAR LONG VOID CONST FLOAT SHORT
+%token <string> DOUBLE SIGNED UNSIGNED VOLATILE
+
+%type <string> declaration_specifiers type_specifier type_qualifier
 
 %%
 
 declaration
-    : declaration_specifiers declarator '\n'
+    : declaration_specifiers declarator { std::cout << " " << *$1 << std::endl; }
     ;
 
 declaration_specifiers
-    : type_specifier
-    | type_specifier declaration_specifiers
-    | type_qualifier
-    | type_qualifier declaration_specifiers
+    : type_specifier { $$ = $1; }
+    | type_specifier declaration_specifiers { $$ = new std::string(*$1 + " " + *$2); }
+    | type_qualifier { $$ = $1; }
+    | type_qualifier declaration_specifiers { $$ = new std::string(*$1 + " " + *$2); }
     ;
 
 type_specifier
@@ -61,9 +64,9 @@ type_qualifier_list
     ;
 
 direct_declarator
-    : IDENTIFIER
+    : IDENTIFIER { std::cout << "Declare " << *$1 << " as"; }
     | '(' declarator ')'
-    | direct_declarator '[' INTEGER ']'
+    | direct_declarator '[' INTEGER ']' { std::cout << " array " << *$3 << " of"; }
     | direct_declarator '[' ']'
     | direct_declarator '(' parameter_list ')'
     | direct_declarator '(' ')'

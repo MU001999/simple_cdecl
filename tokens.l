@@ -1,9 +1,12 @@
 %{
-#include <stdio.h>
+#include <iostream>
+#include <string>
+#include "parser.hpp"
+
 #define SAVE_TOKEN  yylval.string = new std::string(yytext, yyleng)
 %}
 
-delim           [ \t]
+delim           [ \t\n]
 ws              {delim}+
 id              [a-zA-Z_][a-zA-Z0-9_]*
 int             [0-9]+
@@ -14,7 +17,6 @@ int             [0-9]+
 
 {ws}            ;
 {int}           SAVE_TOKEN; return INTEGER;
-"\n"            return('\n'); 
 
 "*"             return('*');
 ","             return(',');
@@ -24,17 +26,18 @@ int             [0-9]+
 "["             return('[');
 "]"             return(']');
 
-"int"           return(INT);
-"char"          return(CHAR);    
-"long"          return(LONG);
-"const"         return(CONST);
-"float"         return(FLOAT);
-"short"         return(SHORT);
-"double"        return(DOUBLE);
-"signed"        return(SIGNED);
-"unsigned"      return(UNSIGNED);
-"volatile"      return(VOLATILE);
+"int"           SAVE_TOKEN; return INT;
+"char"          SAVE_TOKEN; return CHAR;
+"long"          SAVE_TOKEN; return LONG;
+"void"          SAVE_TOKEN; return VOID;
+"const"         SAVE_TOKEN; return CONST;
+"float"         SAVE_TOKEN; return FLOAT;
+"short"         SAVE_TOKEN; return SHORT;
+"double"        SAVE_TOKEN; return DOUBLE;
+"signed"        SAVE_TOKEN; return SIGNED;
+"unsigned"      SAVE_TOKEN; return UNSIGNED;
+"volatile"      SAVE_TOKEN; return VOLATILE;
 
-{id}            SAVE_TOKEN; return(IDENTIFIER);
+{id}            SAVE_TOKEN; return IDENTIFIER;
 
 %%
