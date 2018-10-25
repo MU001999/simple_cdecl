@@ -2,8 +2,6 @@
 
 Cdecl is a program which will turn a c-language declaration into English-like phrases.And it's one-way and very well understood.<br>
 
-Unfortunately, it is only a very simple and incomplete implementation of cdecl by lex & yacc :( <br>
-
 ###### example
 ```
 $ ./simple_cdecl
