@@ -1,6 +1,8 @@
 # cdecl
 
-Cdecl is a program which will turn a c-language declaration into English-like phrases.And it's one-way and very well understood.
+Cdecl is a program which will turn a c-language declaration into English-like phrases.
+
+And it's one-way and very well understood.
 
 #### Examples
 ```
